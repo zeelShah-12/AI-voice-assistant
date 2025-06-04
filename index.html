@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Voice Assistant</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: #f0f0f0;
+      }
+      #output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        height: 300px;
+        overflow-y: auto;
+        margin-bottom: 20px;
+        white-space: pre-wrap;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Voice Assistant</h1>
+    <div id="output">Assistant output will appear here...</div>
+    <button id="start-btn">Start Listening</button>
+
+    <script>
+      const output = document.getElementById("output");
+      const startBtn = document.getElementById("start-btn");
+
+      // Speech Synthesis helper
+      function speak(text) {
+        const synth = window.speechSynthesis;
+        const utter = new SpeechSynthesisUtterance(text);
+        synth.speak(utter);
+      }
+
+      const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        output.textContent =
+          "Sorry, your browser doesn't support Speech Recognition.";
+        startBtn.disabled = true;
+      } else {
+        const recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = "en-US";
+
+        recognition.onstart = () => {
+          output.textContent += "\nListening...";
+        };
+
+        recognition.onerror = (e) => {
+          output.textContent += `\nError: ${e.error}`;
+        };
+
+        recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript
+            .toLowerCase()
+            .trim();
+          output.textContent += `\nYou: ${transcript}`;
+
+          // Handle commands and responses
+          if (
+            transcript.includes("hello") ||
+            transcript.includes("hi") ||
+            transcript.includes("what's up") ||
+            transcript.includes("whats up")
+          ) {
+            speak("Hello! How can I help you today?");
+            output.textContent +=
+              "\nAssistant: Hello! How can I help you today?";
+          } else if (transcript.includes("how are you")) {
+            speak("I'm just a program, but I'm doing great! How about you?");
+            output.textContent +=
+              "\nAssistant: I'm just a program, but I'm doing great! How about you?";
+          } else if (transcript.includes("tell me something good")) {
+            speak(
+              "Here's something good: You are awesome and capable of amazing things!"
+            );
+            output.textContent +=
+              "\nAssistant: Here's something good: You are awesome and capable of amazing things!";
+          } else if (
+            transcript.includes("i'm sad") ||
+            transcript.includes("i am sad")
+          ) {
+            speak(
+              "I'm sorry to hear that. Remember, after the rain comes the rainbow."
+            );
+            output.textContent +=
+              "\nAssistant: I'm sorry to hear that. Remember, after the rain comes the rainbow.";
+          } else if (transcript.includes("time")) {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            speak(`The time is ${timeString}`);
+            output.textContent += `\nAssistant: The time is ${timeString}`;
+          } else if (transcript.includes("tell me a joke")) {
+            speak(
+              "Why don't scientists trust atoms? Because they make up everything!"
+            );
+            output.textContent +=
+              "\nAssistant: Why don't scientists trust atoms? Because they make up everything!";
+          } else if (transcript.includes("thank you")) {
+            speak("You're welcome!");
+            output.textContent += "\nAssistant: You're welcome!";
+          } else if (
+            transcript.includes("goodbye") ||
+            transcript.includes("bye")
+          ) {
+            speak("Goodbye! Have a great day!");
+            output.textContent += "\nAssistant: Goodbye! Have a great day!";
+          } else if (transcript.includes("open google")) {
+            speak("Opening Google");
+            output.textContent += "\nAssistant: Opening Google";
+            window.open("https://www.google.com", "_blank");
+          } else if (transcript.includes("open youtube")) {
+            speak("Opening YouTube");
+            output.textContent += "\nAssistant: Opening YouTube";
+            window.open("https://www.youtube.com", "_blank");
+          } else if (transcript.includes("open linkedin")) {
+            speak("Opening LinkedIn");
+            output.textContent += "\nAssistant: Opening LinkedIn";
+            window.open("https://www.linkedin.com", "_blank");
+          } else if (transcript.includes("open pinterest")) {
+            speak("Opening Pinterest");
+            output.textContent += "\nAssistant: Opening Pinterest";
+            window.open("https://www.pinterest.com", "_blank");
+          } else if (transcript.includes("open calendar")) {
+            speak("Opening Google Calendar");
+            output.textContent += "\nAssistant: Opening Google Calendar";
+            window.open("https://calendar.google.com", "_blank");
+          } else {
+            speak("Sorry, I didn't understand that. Please try again.");
+            output.textContent +=
+              "\nAssistant: Sorry, I didn't understand that. Please try again.";
+          }
+        };
+
+        startBtn.addEventListener("click", () => {
+          recognition.start();
+        });
+      }
+    </script>
+  </body>
+</html>
