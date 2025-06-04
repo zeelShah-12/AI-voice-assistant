@@ -74,19 +74,6 @@ Command	Response / Action
 "Open Pinterest"	Opens Pinterest
 "Open Calendar"	Opens Google Calendar
 
-📁 File Structure
-cpp
-Copy
-Edit
-ai-voice-assistant/
-├── app.py
-├── requirements.txt
-├── README.md
-├── templates/
-│   └── index.html
-└── static/
-    └── (optional images or icons)
 📌 Notes
 Works best in a quiet environment with a good microphone.
 
-You can expand this by integrating with APIs like OpenAI, weather updates, or custom automation.
